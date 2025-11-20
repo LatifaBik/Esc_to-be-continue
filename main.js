@@ -126,27 +126,56 @@ async function initAll() {
         console.error(e);
     }
 }
-if (listElMain && statusElMain) {
-    initMain();
+
+//Function to download all cards for mobile screen.
+const listElAllMobile = document.getElementById('main-list-mobile');
+const statusElAllMobile = document.getElementById('main-status-mobile');
+
+async function initMainMobile() {
+  statusElMain.textContent = 'Laddar alla utmaningar...';
+
+  const all = await getChallenges();
+  const sorted = [...all]
+    .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
+    .slice(0, 15);
+
+  listElMain.innerHTML = '';
+  sorted.forEach(ch => listElMain.appendChild(createChallengeLi(ch)));
+
+  statusElMain.textContent = '';
 }
 
-if (listElAll && statusElAll) {
-    initAll();
+
+//Init functions
+
+const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+if (isMobile) {
+  initMainMobile();      // 15 st i horisontella listan
+} else {
+  initMain();            // 3 st på desktop
+  if (listElAll && statusElAll) initAll();  // ev. andra sidan
 }
+
 
 //Open and close filter function
-const openFilterBtn = document.querySelector('.openFilterBtn');
-const closeFilterBtn = document.querySelector('.closeFilterBtn');
-const filterContent = document.querySelector('.filterContent');
-const filterPanel = document.querySelector('.filterPanel');
+const filter__open = document.querySelector('.filter__open');
+const filter__close = document.querySelector('.filter__close');
+const filter__content = document.querySelector('.filter__content');
 
-openFilterBtn.addEventListener('click', () => {
-     filterContent.style.display = 'block';
-});
+let isFilterOpen = false;
 
-closeFilterBtn.addEventListener('click', () => {
-     filterContent.style.display = 'none';
-});
+if (filter__open && filter__content) {
+  filter__open.addEventListener('click', () => {
+    filter__content.style.display = 'block';
+  });
+}
+
+if (filter__close && filter__content) {
+  filter__close.addEventListener('click', () => {
+    filter__content.style.display = 'none';
+  });
+}
 
 
 

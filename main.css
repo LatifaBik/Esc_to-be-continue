@@ -576,35 +576,35 @@
   white-space: nowrap;
 }
 
-.filters {
-  display: none;
-  flex-direction: column;
+.filter__content {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto auto auto;
   padding: 2rem;
   position: relative;
+  background-color: rgb(246, 241, 241);
 }
 @media screen and (min-width: 700px) {
-  .filters {
-    width: 80%;
-    border: 1px solid rgb(216, 216, 216);
+  .filter__content {
+    width: 90%;
+    margin-left: 3rem;
+    border: 1px solid grey;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3);
   }
-}
-.filters__title {
-  font-size: 1.4rem;
-  font-weight: 400;
-  margin-bottom: 1rem;
 }
 
 .filter {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 @media screen and (min-width: 700px) {
   .filter {
-    float: left;
-    width: 33.33%;
+    grid-column: 1/2;
+    grid-row: 2/3;
   }
 }
 .filter__title {
-  font-size: 1rem;
+  font-size: 1.3rem;
 }
 
 .type__option {
@@ -613,20 +613,19 @@
 
 @media screen and (min-width: 700px) {
   .rating {
-    float: left;
-    width: 33.33%;
+    grid-column: 2/3;
+    grid-row: 2/3;
+    gap: 0.1rem;
   }
 }
 .rating__box {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.5rem;
+  grid-column: 2/3;
+  grid-row: 2/3;
+  gap: 0.1rem;
 }
 .rating__stars {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  grid-column: 2/3;
+  grid-row: 2/3;
   gap: 0.25rem;
   direction: rtl;
   cursor: pointer;
@@ -648,8 +647,8 @@
 
 @media screen and (min-width: 700px) {
   .tags {
-    float: left;
-    width: 33.33%;
+    grid-column: 3/4;
+    grid-row: 2/3;
   }
 }
 .tags .tag {
@@ -685,21 +684,19 @@
 }
 @media screen and (min-width: 700px) {
   .search-bar {
-    width: 30rem;
+    width: 100rem;
   }
 }
 
-.filterBtn {
-  font-size: 1.1rem;
-  margin-bottom: 3rem;
+.filter__content {
+  position: relative;
 }
 
-.filters__close {
+.filter__close {
   position: absolute;
-  top: 0.1rem;
-  right: 0.1rem;
-  font-size: 2rem;
-  border: 0;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1rem;
   background-color: white;
   cursor: pointer;
   z-index: 999;
