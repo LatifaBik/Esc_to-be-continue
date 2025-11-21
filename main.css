@@ -577,34 +577,34 @@
 }
 
 .filter__content {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: auto auto auto;
+  display: none;
+  flex-direction: column;
   padding: 2rem;
   position: relative;
-  background-color: rgb(246, 241, 241);
 }
 @media screen and (min-width: 700px) {
   .filter__content {
-    width: 90%;
-    margin-left: 3rem;
-    border: 1px solid grey;
-    border-radius: 0.5rem;
-    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3);
+    width: 80%;
+    border: 1px solid white;
   }
+}
+.filter__content__title {
+  font-size: 1.4rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
 }
 
 .filter {
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 @media screen and (min-width: 700px) {
   .filter {
-    grid-column: 1/2;
-    grid-row: 2/3;
+    float: left;
+    width: 33.33%;
   }
 }
 .filter__title {
-  font-size: 1.3rem;
+  font-size: 1rem;
 }
 
 .type__option {
@@ -613,19 +613,20 @@
 
 @media screen and (min-width: 700px) {
   .rating {
-    grid-column: 2/3;
-    grid-row: 2/3;
-    gap: 0.1rem;
+    float: left;
+    width: 33.33%;
   }
 }
 .rating__box {
-  grid-column: 2/3;
-  grid-row: 2/3;
-  gap: 0.1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
 }
 .rating__stars {
-  grid-column: 2/3;
-  grid-row: 2/3;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   gap: 0.25rem;
   direction: rtl;
   cursor: pointer;
@@ -647,8 +648,8 @@
 
 @media screen and (min-width: 700px) {
   .tags {
-    grid-column: 3/4;
-    grid-row: 2/3;
+    float: left;
+    width: 33.33%;
   }
 }
 .tags .tag {
@@ -684,19 +685,21 @@
 }
 @media screen and (min-width: 700px) {
   .search-bar {
-    width: 100rem;
+    width: 30rem;
   }
 }
 
-.filter__content {
-  position: relative;
+.filterBtn {
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
 }
 
-.filter__close {
+.filters__close {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-size: 1rem;
+  top: 0.1rem;
+  right: 0.1rem;
+  font-size: 2rem;
+  border: 0;
   background-color: white;
   cursor: pointer;
   z-index: 999;

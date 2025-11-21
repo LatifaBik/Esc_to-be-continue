@@ -1,87 +1,82 @@
 @use '../lib/variables_mixins.scss' as *;
 
 .filter__content {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto auto auto;
+    display: none;
+    flex-direction: column;
     padding: 2rem;
     position: relative;
-    background-color: rgb(246, 241, 241);
 
-    @include desktop {
-        width: 90%;
-        margin-left: 3rem;
-        border: 1px solid grey;
-        border-radius: 0.5rem;
-        box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3);
+    @include desktop {   
+        width: 80%;
+        border: 1px solid white;    
     }
-}
-
-.filter {
-    margin-bottom: 1rem;
-
-    @include desktop {
-        grid-column: 1 / 2;
-        grid-row: 2 / 3;
-    }
-
     &__title {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
+        font-weight: 400;
+        margin-bottom: 1rem;  
     }
 }
+.filter {
+    margin-bottom: 2rem;
 
+    @include desktop {
+        float: left;
+        width: 33.33%;
+    }
+    &__title {
+        font-size: 1rem;
+    }
+}
 .type {
 
     &__option {
         padding-bottom: 0.5rem;
     }
 }
+
 .rating {
 
-    @include desktop { 
-        grid-column: 2 / 3;
-        grid-row: 2 / 3;
-        gap: 0.1rem;
+    @include desktop {
+        float: left;
+        width: 33.33%;
     }
 
     &__box {
-        grid-column: 2 / 3;
-        grid-row: 2 / 3;
-        gap: 0.1rem;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;      
     }
-
     &__stars {
-        grid-column: 2 / 3;
-         grid-row: 2 / 3;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         gap: 0.25rem;
-        direction: rtl; //för att få stjärnorna till vänster lyser upp
-        cursor: pointer;
+                direction: rtl; //för att få stjärnorna till vänster lyser upp
+                cursor: pointer;
     }
 
     .fa-star {
         font-size: 1.2rem;
         color: gray;
     }
-
     .fa-star.checked {
         color: orange;
     }
-
-    .fa-star:hover,
-    .fa-star:hover~.fa-star {
-        color: orange;
-    }
-
+        .fa-star:hover,
+    .fa-star:hover ~ .fa-star {
+    color: orange;
+  }
     p {
-        padding: 0 1rem;
+        padding: 0 1rem;   
     }
 }
 
 .tags {
 
     @include desktop {
-        grid-column: 3 / 4;
-         grid-row: 2 / 3;
+        float: left;
+        width: 33.33%;  
     }
 
     .tag {
@@ -103,13 +98,9 @@
         background-color: grey;
         color: white;
         box-shadow: none;
-
     }
-
 }
-
 .search-bar {
-
     input {
         width: 20rem;
         padding: 0.5rem;
@@ -124,21 +115,23 @@
 
     //NYTT
     @include desktop {
-        width: 100rem;
+        width: 30rem;
     }
 }
 
 //FILTER CHALLENGES
-.filter__content {
-    position:relative
+.filterBtn {
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
 }
 
-.filter__close {
-   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-size: 1rem;
+.filters__close{
+  position: absolute;
+  top: 0.1rem;
+  right: 0.1rem;
+  font-size: 2rem;
+  border: 0;
   background-color: white;
   cursor: pointer;
-  z-index: 999;
+  z-index: 999;      
 }

@@ -163,7 +163,7 @@ const filter__open = document.querySelector('.filter__open');
 const filter__close = document.querySelector('.filter__close');
 const filter__content = document.querySelector('.filter__content');
 
-let isFilterOpen = false;
+let isfilter__open = false;
 
 if (filter__open && filter__content) {
   filter__open.addEventListener('click', () => {
@@ -177,7 +177,7 @@ if (filter__close && filter__content) {
   });
 }
 
-
+//Function to download filter options
 
 
 
