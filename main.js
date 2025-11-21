@@ -178,6 +178,62 @@ if (filter__close && filter__content) {
 }
 
 //Function to download filter options
+const cbonline   = document.getElementById('#onsite');
+const cbonsite   = document.getElementById('#online');
+const minRating   = document.getElementById('#minRating');
+const maxRating   = document.getElementById('#maxRating');
+const inputtext = document.getElementById('.filterKeyword');
+const filterTags = document.querySelectorAll('.filterTags');
+
+function applyFilters() {
+    if (!allChallenges.length) return; // inget att filtrera än
+
+    const wantonline = cbonline.checked;
+    const wantonsite = cbonsite.checked;
+
+    const minRating = Number(inputMin.value) || 0;
+    const maxRating = Number(inputMax.value) || 5;
+
+    const text = inputtext.value.trim().toLowerCase();
+
+    // vilka tags är valda?
+    const activeTags = [...filterTags]
+        .filter(btn => btn.classList.contains('checked'))
+        .map(btn => btn.dataset.tag.toLowerCase());
+
+    let filtered = allChallenges.filter(ch => {
+        // 1) typ-filter
+        if (wantonline && !wantonsite && ch.type !== 'online') return false;
+        if (wantonsite && !wantonline && ch.type !== 'onsite') return false;
+        // om båda är avbockade → visa alla typer
+
+        // 2) rating-filter
+        const r = Number(ch.rating ?? 0);
+        if (r < minRating || r > maxRating) return false;
+
+        // 3) keyword i titel eller beskrivning
+        if (text) {
+            const combinedText = (ch.title + ' ' + ch.description).toLowerCase();
+            if (!combinedText.includes(text)) return false;
+        }
+
+        // 4) tags (om några är valda: utmaningen måste ha minst en av dem)
+        if (activeTags.length) {
+            const chTags = (ch.labels || []).map(l => String(l).toLowerCase());
+            const hasMatch = activeTags.some(t => chTags.includes(t));
+            if (!hasMatch) return false;
+        }
+
+        return true;
+    });
+
+    // sortera t.ex. efter rating om du vill
+    filtered = filtered.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
+
+    // rendera om listan (all-list eller main-list, beroende på var filtret gäller)
+    renderChallenges(filtered, listElAll);
+}
+
 
 
 
