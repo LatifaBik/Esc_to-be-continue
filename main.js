@@ -14,36 +14,36 @@ closemenu.addEventListener("click", () => {
 
 //Funktion to download api, is provided in task 4 Specifikation ==> API: https://lernia-sjj-assignments.vercel.app/
 async function getChallenges() {
-    const res = await fetch('https://lernia-sjj-assignments.vercel.app/api/challenges');
-    const data = await res.json();
-    return data.challenges;
+  const res = await fetch('https://lernia-sjj-assignments.vercel.app/api/challenges');
+  const data = await res.json();
+  return data.challenges;
 };
 
 
 //unktion to create list challenges
 
 function createChallengeLi(ch) {
-    const {
-        title,
-        description,
-        type,
-        minParticipants,
-        maxParticipants,
-        rating = 0,
-        image,
-        labels = []
-    } = ch;
+  const {
+    title,
+    description,
+    type,
+    minParticipants,
+    maxParticipants,
+    rating = 0,
+    image,
+    labels = []
+  } = ch;
 
 
-    const full = Math.floor(Number(rating));
-    const empty = 5 - full;
-    const filledStars = '★ '.repeat(full).trim();
-    const emptyStars = '☆'.repeat(empty);
-    const typeText = type === 'onsite' ? '(on-site)' : '(networked)';
+  const full = Math.floor(Number(rating));
+  const empty = 5 - full;
+  const filledStars = '★ '.repeat(full).trim();
+  const emptyStars = '☆'.repeat(empty);
+  const typeText = type === 'onsite' ? '(on-site)' : '(networked)';
 
-    const li = document.createElement('li');
-    li.className = 'challenges__listItem';
-    li.innerHTML = `
+  const li = document.createElement('li');
+  li.className = 'challenges__listItem';
+  li.innerHTML = `
     <article class="challenge">
      <div class="challenge__imageWrapper">
       <img src="${image}" alt="${title}" class="challenge__image">
@@ -79,7 +79,7 @@ function createChallengeLi(ch) {
       </div>
     </article>
   `;
-    return li;
+  return li;
 }
 
 //Function to download cards for front site
@@ -87,18 +87,18 @@ const listElMain = document.getElementById('main-list');
 const statusElMain = document.getElementById('main-status');
 
 async function initMain() {
-    try {
-        statusElMain.textContent = 'Laddar…';
-        const all = await getChallenges();
-        const top3 = [...all].sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0)).slice(0, 3);
+  try {
+    statusElMain.textContent = 'Laddar…';
+    const all = await getChallenges();
+    const top3 = [...all].sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0)).slice(0, 3);
 
-        listElMain.innerHTML = '';
-        top3.forEach(ch => listElMain.appendChild(createChallengeLi(ch)));
-        statusElMain.textContent = '';
-    } catch (e) {
-        statusElMain.textContent = 'Kunde inte ladda data.';
-        console.error(e);
-    }
+    listElMain.innerHTML = '';
+    top3.forEach(ch => listElMain.appendChild(createChallengeLi(ch)));
+    statusElMain.textContent = '';
+  } catch (e) {
+    statusElMain.textContent = 'Kunde inte ladda data.';
+    console.error(e);
+  }
 }
 
 
@@ -107,24 +107,24 @@ const listElAll = document.getElementById('all-list');
 const statusElAll = document.getElementById('all-status');
 
 async function initAll() {
-    try {
-        statusElAll.textContent = 'Laddar alla utmaningar...';
+  try {
+    statusElAll.textContent = 'Laddar alla utmaningar...';
 
-        const all = await getChallenges();
-        const sorted = [...all].sort(
-            (a, b) => (b.rating ?? 0) - (a.rating ?? 0)).slice(0, 15);
+    const all = await getChallenges();
+    const sorted = [...all].sort(
+      (a, b) => (b.rating ?? 0) - (a.rating ?? 0)).slice(0, 15);
 
-        listElAll.innerHTML = '';
-        sorted.forEach(ch => {
-            listElAll.appendChild(createChallengeLi(ch));
-        });
+    listElAll.innerHTML = '';
+    sorted.forEach(ch => {
+      listElAll.appendChild(createChallengeLi(ch));
+    });
 
 
-        statusElAll.textContent = '';
-    } catch (e) {
-        statusElAll.textContent = 'Kunde inte ladda data: ' + e.message;
-        console.error(e);
-    }
+    statusElAll.textContent = '';
+  } catch (e) {
+    statusElAll.textContent = 'Kunde inte ladda data: ' + e.message;
+    console.error(e);
+  }
 }
 
 //Function to download all cards for mobile screen.
@@ -178,61 +178,73 @@ if (filter__close && filter__content) {
 }
 
 //Function to download filter options
-const cbonline   = document.getElementById('#onsite');
-const cbonsite   = document.getElementById('#online');
-const minRating   = document.getElementById('#minRating');
-const maxRating   = document.getElementById('#maxRating');
-const inputtext = document.getElementById('.filterKeyword');
-const filterTags = document.querySelectorAll('.filterTags');
+let allChallenges = []; // fylls i initAll
+
+const cbOnline  = document.getElementById('online');
+const cbOnsite  = document.getElementById('onsite');
+const minRatingEl = document.getElementById('minRating');
+const maxRatingEl = document.getElementById('maxRating');
+const inputTextEl = document.querySelector('.filterKeyword input');
+const tagEls = document.querySelectorAll('.tag');
+
+function getRatingFromStars(container) {
+  return container.querySelectorAll('.fa-star.checked').length || 0;
+}
 
 function applyFilters() {
-    if (!allChallenges.length) return; // inget att filtrera än
+  if (!allChallenges.length) return;
 
-    const wantonline = cbonline.checked;
-    const wantonsite = cbonsite.checked;
+  const wantOnline = cbOnline.checked;
+  const wantOnsite = cbOnsite.checked;
 
-    const minRating = Number(inputMin.value) || 0;
-    const maxRating = Number(inputMax.value) || 5;
+  const minRating = getRatingFromStars(minRatingEl);
+  const maxRating = getRatingFromStars(maxRatingEl);
 
-    const text = inputtext.value.trim().toLowerCase();
+  const text = inputTextEl.value.trim().toLowerCase();
 
-    // vilka tags är valda?
-    const activeTags = [...filterTags]
-        .filter(btn => btn.classList.contains('checked'))
-        .map(btn => btn.dataset.tag.toLowerCase());
+  const activeTags = [...tagEls]
+    .filter(el => el.classList.contains('checked'))
+    .map(el => el.textContent.trim().toLowerCase());
 
-    let filtered = allChallenges.filter(ch => {
-        // 1) typ-filter
-        if (wantonline && !wantonsite && ch.type !== 'online') return false;
-        if (wantonsite && !wantonline && ch.type !== 'onsite') return false;
-        // om båda är avbockade → visa alla typer
+  let filtered = allChallenges.filter(ch => {
+    // typ
+    if (wantOnline && !wantOnsite && ch.type !== 'online') return false;
+    if (wantOnsite && !wantOnline && ch.type !== 'onsite') return false;
 
-        // 2) rating-filter
-        const r = Number(ch.rating ?? 0);
-        if (r < minRating || r > maxRating) return false;
+    // rating
+    const r = Number(ch.rating ?? 0);
+    if (r < minRating || r > maxRating) return false;
 
-        // 3) keyword i titel eller beskrivning
-        if (text) {
-            const combinedText = (ch.title + ' ' + ch.description).toLowerCase();
-            if (!combinedText.includes(text)) return false;
-        }
+    // keyword
+    if (text) {
+      const combinedText = (ch.title + ' ' + ch.description).toLowerCase();
+      if (!combinedText.includes(text)) return false;
+    }
 
-        // 4) tags (om några är valda: utmaningen måste ha minst en av dem)
-        if (activeTags.length) {
-            const chTags = (ch.labels || []).map(l => String(l).toLowerCase());
-            const hasMatch = activeTags.some(t => chTags.includes(t));
-            if (!hasMatch) return false;
-        }
+    // tags
+    if (activeTags.length) {
+      const chTags = (ch.labels || []).map(l => String(l).toLowerCase());
+      const hasMatch = activeTags.some(t => chTags.includes(t));
+      if (!hasMatch) return false;
+    }
 
-        return true;
-    });
+    return true;
+  });
 
-    // sortera t.ex. efter rating om du vill
-    filtered = filtered.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
-
-    // rendera om listan (all-list eller main-list, beroende på var filtret gäller)
-    renderChallenges(filtered, listElAll);
+  filtered.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
+  renderChallenges(filtered, listElAll);
 }
+cbOnline.addEventListener('change', applyFilters);
+cbOnsite.addEventListener('change', applyFilters);
+inputTextEl.addEventListener('input', applyFilters);
+
+tagEls.forEach(tag => {
+  tag.addEventListener('click', () => {
+    tag.classList.toggle('checked');
+    applyFilters();
+  });
+});
+
 
 
 
