@@ -85,27 +85,32 @@ async function initMain() {
   }
 }
 
-initMain();
+
 // Function to download challenges to next page
-const listElall = document.querySelector('#all-list');
+const listElAll = document.querySelector('#all-list');
 const statusElAll = document.querySelector('#all-status');
 
-async function ititall(){
+async function intitAll(){
   try {
     statusElAll.textContent = 'Loading challenges..';
     const all = await getChallenges();
-    const top15 = [...all].sort ((a, b) => (b.rating ?? 0) - (a.rating ?? 0)).slice(0,15);
+    const sorted = [...all].sort ((a, b) => (b.rating ?? 0) - (a.rating ?? 0)).slice(0,15);
 
-    listElall.innerHTML = "";
-    top15.forEach(ch => listall .appendChild(createchallengeli(ch)));
+    listElAll.innerHTML = "";
+    sorted.forEach(ch => listElAll.appendChild(createChallengeli(ch)));
     statusElAll.textContent = "";
-  } catch } error (e) {
+  } catch (e){ 
     statusElAll.textContent = 'Could not load data..';
 
     console.error(e);
 
   }
-if {
-  initMain
+  }
+if (listElMain && statusElMain){
+  initMain();
 }
+if (listElAll && statusElAll) {
+ intitAll();
+}
+
 
