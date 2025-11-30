@@ -12,48 +12,100 @@ closemenu.addEventListener("click", () => {
 });*/
 
 //Function to download API data and display it on the page
-async function getChcallenges() {
+async function getChallenges() {
   const res = await fetch('https://lernia-sjj-assignments.vercel.app/api/challenges');
   const data = await res.json();
-  return data.Challenges();
+  return data.challenges;
 }
 
 // function to create challenges cards
-function createChallenges(ch) {
+function createChallengeli(ch) {
   const {
     title,
-    desctription,
-    img,
+    description,
+    image,
     maxParticipants,
     minParticipants,
     rating = 0,
-    labels = [],
+   labels = [],
     type,
-  } = challenge;
+  } = ch;
 
-  const fullrating = Math.floor(Number(rating));
-  const filledStars = '★'.repeat(filedrating).trim();
-  const emptyStars = '☆'.repeat(emptyrating);
-  const empty = 5 - filledStars;
-  const typeText = type === type => 'onsite' ? 'on-site' : 'networked';
+  const full = Math.floor(Number(rating));
+  const empty = 5 - full;
+  const filledStars = '★'.repeat(full).trim();
+  const emptyStars = '☆'.repeat(empty);
+  const typeText = type === 'onsite' ? '(on-site)' : '(networked)';
 
   const li = document.createElement('li');
-  li.class = "challenge__listItem";
+  li.className = "challenge__listItem";
 
   li.innerHTML = `
-
-<article>
-       <img src="https://lh3.googleusercontent.com/d/1Epbt4rLl_BIINRA3xdLfVbTJ9pn1kfIK" alt="hacker sitting in front of compuer with multiple monitors" class ="challenge__image">
-        <h3 class="challenge__title">Title of rooom (on-site)</h3>
+ <article class="challenge">
+       <img src="${image}" alt="${title}" class ="challenge__image">
+       
         <div class="challenge__details">
-          <div class="challenge__rating" role="img" aria-label="4 of 5 stars">
-          <span class="challenge__rating__filledstar">★ ★ ★ ★</span>
-            <span class="challenge__rating__emptystar">☆</span>
+          <div class="challenge__rating" role="img" aria-label="${rating} of 5 stars">
+          <span class="challenge__rating__filledstar">${filledStars}</span>
+            <span class="challenge__rating__emptystar">${emptyStars}</span>
               </div>
-                <span class="challenge__size">2-6 participants</span>
-               </div>
-                <p class="challenge__description">Praeterea, ex culpa non invenies unum aut non accusatis unum. Et nihil inuitam. Nemo nocere tibi erit, et non inimicos, et</p>
-             <button class="challenge__bookbutton">Book this room</button>                
+               <h3 class="challenge__title">${title} (${typeText})</h3>
+                <span class="challenge__size">${minParticipants} - ${maxParticipants} participants</span>
+              
+                </div>
+               
+                <p class="challenge__description">${description}</p>
+                <!--Checks if there are any labels in the labels array. Yes= show tags. No= no output -->
+      ${labels.length ? `<div class="challenge__labels">${labels.map(l => `<span class="tags">#${l}</span>`).join(' ')}</div>` : ''}
+            <div class="challenge__buttonWrapper">
+                <button class="challenge__bookbutton">
+             ${type==='onsite'? 'Book this room' : 'Take challenge online'}
+             </button> 
+             </div>               
  </article>
-
+  `;
+  return li;
 }
+// Function to download challenges to front site
+const listElMain = document.querySelector('#main-list');
+const statusElMain = document.querySelector('#main-status');
+
+async function initMain() {
+  try {
+    statusElMain.textContent = 'Loading challenges...';
+    const all = await getChallenges();
+    const top3 = [...all].sort ((a,b) => (b.rating ?? 0) -(a.rating ??0)).slice(0,3);
+    listElMain.innerHTML = "";
+    top3.forEach(ch => listElMain.appendChild(createChallengeli(ch))); 
+    statusElMain.textContent = "";
+  } catch (e) {
+  
+     statusElMain.textContent = 'Could not load data.';
+        console.error(e);
+  }
+}
+
+initMain();
+// Function to download challenges to next page
+const listElall = document.querySelector('#all-list');
+const statusElAll = document.querySelector('#all-status');
+
+async function ititall(){
+  try {
+    statusElAll.textContent = 'Loading challenges..';
+    const all = await getChallenges();
+    const top15 = [...all].sort ((a, b) => (b.rating ?? 0) - (a.rating ?? 0)).slice(0,15);
+
+    listElall.innerHTML = "";
+    top15.forEach(ch => listall .appendChild(createchallengeli(ch)));
+    statusElAll.textContent = "";
+  } catch } error (e) {
+    statusElAll.textContent = 'Could not load data..';
+
+    console.error(e);
+
+  }
+if {
+  initMain
+}
+
